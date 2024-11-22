@@ -1,10 +1,11 @@
 const stackstx = require('@stacks/transactions');
+const stacksCommon = require('@stacks/common');
 const express = require('express');
 
 const app = express ();
 app.use(express.json());
 
-const PORT = process.env.PORT || 9999;
+const PORT = process.env.PORT || 9990;
 
 app.listen(PORT, () => {
   console.log("Server Listening on PORT:", PORT);
@@ -32,6 +33,15 @@ app.get("/pub2addr/:network/:pub", (request, response) => {
       'address': addr,
       'network': request.params.network,
       'pubkey': request.params.pub
+   }
+
+   response.send(build_res(0,"",data));
+});
+
+app.get("/txid/:txhex", (request, response) => {
+   const txid = stackstx.txidFromData(stacksCommon.hexToBytes(request.params.txhex));
+   const data = {
+      'txid': txid,
    }
 
    response.send(build_res(0,"",data));
