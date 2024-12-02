@@ -60,9 +60,10 @@ app.post("/tansfer/stx", async (request, response) => {
    };
 
    const transaction = await stackstx.makeUnsignedSTXTokenTransfer(txOptions);
+   const presign = stackstx.sigHashPreSign(transaction.signBegin(), stackstx.AuthType.Standard, txOptions.fee, txOptions.nonce)
 
    const data = {
-      'presign': transaction.signBegin(),
+      'presign': presign,
       'rawtx': transaction.serialize(), 
    }
 
